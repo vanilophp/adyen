@@ -6,8 +6,8 @@ namespace Vanilo\Adyen\Tests;
 
 use Konekt\Concord\ConcordServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Vanilo\Payment\Providers\ModuleServiceProvider as PaymentModule;
 use Vanilo\Adyen\Providers\ModuleServiceProvider as AdyenModule;
+use Vanilo\Payment\Providers\ModuleServiceProvider as PaymentModule;
 
 abstract class TestCase extends Orchestra
 {

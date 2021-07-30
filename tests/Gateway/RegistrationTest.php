@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Vanilo\Adyen\Tests\Gateway;
 
-use Vanilo\Payment\Contracts\PaymentGateway;
-use Vanilo\Payment\PaymentGateways;
 use Vanilo\Adyen\AdyenPaymentGateway;
 use Vanilo\Adyen\Tests\TestCase;
+use Vanilo\Payment\Contracts\PaymentGateway;
+use Vanilo\Payment\PaymentGateways;
 
 class RegistrationTest extends TestCase
 {
