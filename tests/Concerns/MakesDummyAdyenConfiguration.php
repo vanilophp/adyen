@@ -12,7 +12,7 @@ declare(strict_types=1);
  *
  */
 
-namespace Vanilo\Adyen\Tests;
+namespace Vanilo\Adyen\Tests\Concerns;
 
 trait MakesDummyAdyenConfiguration
 {

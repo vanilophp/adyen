@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Vanilo\Adyen\Messages;
 
 use Illuminate\Support\Facades\View;
+use Vanilo\Payment\Contracts\Payment;
 use Vanilo\Payment\Contracts\PaymentRequest;
 
 class AdyenPaymentRequest implements PaymentRequest
@@ -15,10 +16,20 @@ class AdyenPaymentRequest implements PaymentRequest
 
     private string $environment;
 
-    public function __construct(string $clientKey, string $environment)
-    {
+    private Payment $payment;
+
+    private array $paymentMethods;
+
+    public function __construct(
+        Payment $payment,
+        array $paymentMethods,
+        string $clientKey,
+        string $environment
+    ) {
         $this->clientKey = $clientKey;
         $this->environment = $environment;
+        $this->payment = $payment;
+        $this->paymentMethods = $paymentMethods;
     }
 
     public function getHtmlSnippet(array $options = []): ?string
@@ -27,8 +38,9 @@ class AdyenPaymentRequest implements PaymentRequest
             $this->view,
             [
                 'clientKey' => $this->clientKey,
-                'locale' => $options['locale'] ?? app()->getLocale(),
                 'environment' => $this->environment,
+                'locale' => $options['locale'] ?? app()->getLocale(),
+                'paymentMethods' => $this->paymentMethods,
             ]
         )->render();
     }

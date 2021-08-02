@@ -15,3 +15,9 @@ Being a [Concord Module](https://konekt.dev/concord/1.9/modules) it is intended 
 
 Refer to the markdown files in the [docs](docs/) folder.
 
+## Known Issues
+
+Adyen expects amounts to be specified in "minor" units (eg. cents: 10 EUR => { amount: 1000, currency: "EUR" }).
+Currently the library takes the original amount, multiplies it by 100 and
+calls it a day. Certain currencies are not like that, we need an
+adjustment layer to handle this.

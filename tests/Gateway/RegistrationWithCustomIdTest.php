@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Vanilo\Adyen\Tests\Gateway;
 
 use Vanilo\Adyen\AdyenPaymentGateway;
-use Vanilo\Adyen\Tests\MakesDummyAdyenConfiguration;
+use Vanilo\Adyen\Tests\Concerns\MakesDummyAdyenConfiguration;
 use Vanilo\Adyen\Tests\TestCase;
 use Vanilo\Payment\Contracts\PaymentGateway;
 use Vanilo\Payment\PaymentGateways;

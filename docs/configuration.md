@@ -9,12 +9,11 @@ ADYEN_IS_TEST=false               # true for test, false for live environments
 ADYEN_API_KEY="AQEjhmfuXNWTK0..." # Find at Adyen Customer Area -> Developers -> API credentials
 ADYEN_MERCHANT_ACCOUNT="YourECOM" # Obtain the merchant key from Adyen Customer Area
 ADYEN_CLIENT_KEY="test_WDLE44..." # Find at Adyen Customer Area -> Developers -> API credentials
-
-## The setting below is needed in very rare cases, it's safe to leave it undefined
-ADYEN_LIVE_ENDPOINT_URL_PREFIX="" 
+ADYEN_LIVE_ENDPOINT_URL_PREFIX="1797a841fbb37ca7-AdyenDemo" # Only needed for live 
 ```
 
-> for more details refer to [Adyen Getting Started](https://docs.adyen.com/online-payments/get-started
+> For more details refer to [Adyen Getting Started](https://docs.adyen.com/online-payments/get-started)
+> and [Live URL Prefix](https://docs.adyen.com/development-resources/live-endpoints#live-url-prefix).
 
 ## Registration with Payments Module
 

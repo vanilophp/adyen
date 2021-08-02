@@ -6,7 +6,8 @@ namespace Vanilo\Adyen\Providers;
 
 use Konekt\Concord\BaseModuleServiceProvider;
 use Vanilo\Adyen\AdyenPaymentGateway;
-use Vanilo\Adyen\Client\AdyenClient;
+use Vanilo\Adyen\Client\RealAdyenClient;
+use Vanilo\Adyen\Contracts\AdyenClient;
 use Vanilo\Payment\PaymentGateways;
 
 class ModuleServiceProvider extends BaseModuleServiceProvider
@@ -23,8 +24,8 @@ class ModuleServiceProvider extends BaseModuleServiceProvider
         }
 
         if ($this->config('bind', true)) {
-            $this->app->bind(AdyenClient::class, function ($app) {
-                return new AdyenClient(
+            $this->app->bind(RealAdyenClient::class, function ($app) {
+                return new RealAdyenClient(
                     $this->config('api_key'),
                     $this->config('merchant_account'),
                     $this->config('client_key'),
@@ -32,6 +33,8 @@ class ModuleServiceProvider extends BaseModuleServiceProvider
                     $this->config('is_test'),
                 );
             });
+
+            $this->app->bind(AdyenClient::class, RealAdyenClient::class);
 
             $this->app->bind(AdyenPaymentGateway::class, function ($app) {
                 return new AdyenPaymentGateway(

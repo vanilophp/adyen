@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Vanilo\Adyen;
 
 use Illuminate\Http\Request;
-use Vanilo\Adyen\Client\AdyenClient;
-use Vanilo\Adyen\Messages\AdyenPaymentRequest;
+use Vanilo\Adyen\Contracts\AdyenClient;
+use Vanilo\Adyen\Factories\RequestFactory;
 use Vanilo\Contracts\Address;
 use Vanilo\Payment\Contracts\Payment;
 use Vanilo\Payment\Contracts\PaymentGateway;
@@ -18,6 +18,8 @@ class AdyenPaymentGateway implements PaymentGateway
     public const DEFAULT_ID = 'adyen';
 
     private AdyenClient $adyenClient;
+
+    private ?RequestFactory $requestFactory = null;
 
     public function __construct(AdyenClient $adyenClient)
     {
@@ -31,10 +33,11 @@ class AdyenPaymentGateway implements PaymentGateway
 
     public function createPaymentRequest(Payment $payment, Address $shippingAddress = null, array $options = []): PaymentRequest
     {
-        return new AdyenPaymentRequest(
-            $this->adyenClient->getClientKey(),
-            $this->adyenClient->getEnvironment(),
-        );
+        if (null === $this->requestFactory) {
+            $this->requestFactory = new RequestFactory($this->adyenClient);
+        }
+
+        return $this->requestFactory->create($payment, $options);
     }
 
     public function processPaymentResponse(Request $request, array $options = []): PaymentResponse

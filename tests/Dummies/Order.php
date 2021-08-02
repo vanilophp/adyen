@@ -39,6 +39,6 @@ class Order extends Model implements Payable
 
     public function getBillpayer(): ?Billpayer
     {
-        return null;
+        return new Customer();
     }
 }
