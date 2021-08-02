@@ -22,20 +22,20 @@ class ModuleServiceProvider extends BaseModuleServiceProvider
             );
         }
 
-        $this->app->bind(AdyenClient::class, function ($app) {
-            return new AdyenClient(
-                $this->config('api_key'),
-                $this->config('merchant_account'),
-                $this->config('client_key'),
-                $this->config('live_endpoint_url_prefix'),
-                $this->config('is_test'),
-            );
-        });
-
         if ($this->config('bind', true)) {
+            $this->app->bind(AdyenClient::class, function ($app) {
+                return new AdyenClient(
+                    $this->config('api_key'),
+                    $this->config('merchant_account'),
+                    $this->config('client_key'),
+                    $this->config('live_endpoint_url_prefix'),
+                    $this->config('is_test'),
+                );
+            });
+
             $this->app->bind(AdyenPaymentGateway::class, function ($app) {
                 return new AdyenPaymentGateway(
-                    //$app->make(AdyenClient::class)
+                    $app->make(AdyenClient::class)
                 );
             });
         }

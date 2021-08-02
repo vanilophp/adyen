@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Vanilo\Adyen\Tests\Gateway;
 
 use Vanilo\Adyen\AdyenPaymentGateway;
+use Vanilo\Adyen\Tests\MakesDummyAdyenConfiguration;
 use Vanilo\Adyen\Tests\TestCase;
 use Vanilo\Payment\Contracts\PaymentGateway;
 use Vanilo\Payment\PaymentGateways;
 
 class RegistrationWithCustomIdTest extends TestCase
 {
+    use MakesDummyAdyenConfiguration;
+
     protected function setUp(): void
     {
         PaymentGateways::reset();
@@ -37,6 +40,7 @@ class RegistrationWithCustomIdTest extends TestCase
     {
         parent::resolveApplicationConfiguration($app);
 
+        $this->setDummyAdyenConfiguration();
         config(['vanilo.adyen.gateway.id' => 'alternative_gw_name']);
     }
 }

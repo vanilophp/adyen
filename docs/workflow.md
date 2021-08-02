@@ -65,13 +65,18 @@ class OrderController
 {!! $paymentRequest->getHtmlSnippet(); !!}
 ```
 
-The generated HTML snippet will contain a prepared, HTML Form ...
+The generated HTML snippet will contain a prepared, HTML Form ready to
+pay with Adyen.
 
 You can pass an array to the `getHtmlSnippet()` method that recognizes
 the following keys:
 
 ```blade
-{!! $paymentRequest->getHtmlSnippet(); !!}
+{!! $paymentRequest->getHtmlSnippet(
+    [
+        'locale' => 'nl-NL', // The locale used by Adyen to render the frontend
+    ]);
+!!}
 ```
 
 ### Payment Request Options

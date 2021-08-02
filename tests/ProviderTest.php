@@ -19,6 +19,8 @@ use Vanilo\Adyen\Client\AdyenClient;
 
 class ProviderTest extends TestCase
 {
+    use MakesDummyAdyenConfiguration;
+
     /** @test */
     public function it_configures_the_di_registered_adyen_client()
     {
@@ -31,18 +33,12 @@ class ProviderTest extends TestCase
         $this->assertEquals('VaniloECOM', $config->getMerchantAccount());
         $this->assertEquals(Environment::TEST, $config->getEnvironment());
 
-        $this->assertEquals('test_CKEY', $client->getClientKey());
+        $this->assertEquals('test_ClientKEY_444', $client->getClientKey());
     }
 
     protected function resolveApplicationConfiguration($app)
     {
         parent::resolveApplicationConfiguration($app);
-
-        config([
-            'vanilo.adyen.api_key' => 'm8Hg*UbaEX5',
-            'vanilo.adyen.merchant_account' => 'VaniloECOM',
-            'vanilo.adyen.client_key' => 'test_CKEY',
-            'vanilo.adyen.is_test' => true,
-        ]);
+        $this->setDummyAdyenConfiguration();
     }
 }

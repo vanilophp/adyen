@@ -23,6 +23,8 @@ class AdyenClient
 
     private string $clientKey;
 
+    private string $environment;
+
     public function __construct(
         string $apiKey,
         string $merchantAccount,
@@ -30,15 +32,13 @@ class AdyenClient
         string $liveEndpointUrlPrefix = null,
         bool $isTestEnvironment = false
     ) {
+        $this->clientKey = $clientKey;
+        $this->environment = $isTestEnvironment ? Environment::TEST : Environment::LIVE;
+
         $this->nativeClient = new NativeAdyenClient();
         $this->nativeClient->setXApiKey($apiKey);
         $this->nativeClient->setMerchantAccount($merchantAccount);
-        $this->nativeClient->setEnvironment(
-            $isTestEnvironment ? Environment::TEST : Environment::LIVE,
-            $liveEndpointUrlPrefix
-        );
-
-        $this->clientKey = $clientKey;
+        $this->nativeClient->setEnvironment($this->environment, $liveEndpointUrlPrefix);
     }
 
     public function getNativeClient(): NativeAdyenClient
@@ -49,5 +49,10 @@ class AdyenClient
     public function getClientKey(): string
     {
         return $this->clientKey;
+    }
+
+    public function getEnvironment()
+    {
+        return $this->environment;
     }
 }

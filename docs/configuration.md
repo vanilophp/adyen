@@ -5,8 +5,16 @@
 The following `.env` parameters can be set in order to work with this package.
 
 ```dotenv
-ADYEN_XXX=
+ADYEN_IS_TEST=false               # true for test, false for live environments
+ADYEN_API_KEY="AQEjhmfuXNWTK0..." # Find at Adyen Customer Area -> Developers -> API credentials
+ADYEN_MERCHANT_ACCOUNT="YourECOM" # Obtain the merchant key from Adyen Customer Area
+ADYEN_CLIENT_KEY="test_WDLE44..." # Find at Adyen Customer Area -> Developers -> API credentials
+
+## The setting below is needed in very rare cases, it's safe to leave it undefined
+ADYEN_LIVE_ENDPOINT_URL_PREFIX="" 
 ```
+
+> for more details refer to [Adyen Getting Started](https://docs.adyen.com/online-payments/get-started
 
 ## Registration with Payments Module
 
@@ -99,6 +107,10 @@ return [
     'modules' => [
         Vanilo\Adyen\Providers\ModuleServiceProvider::class => [
             'bind' => false,
+        //...
+    ]
+    //...
+];
 ```
 
 This can be useful if the Gateway configuration can't be set in the env file, for example when:
@@ -107,16 +119,26 @@ This can be useful if the Gateway configuration can't be set in the env file, fo
 - Your app has **multiple payment methods** that use Adyen with **different credentials**
 - There is a **multi-tenant application**, where each tenant has their own credentials
 
-Setting `vanilo.adyen.bind` to `false` will cause that the class doesn't get bound with the
-Laravel DI container automatically. Therefore, you need to do this yourself in your application,
-typically in the `AppServiceProvider::boot()` method:
+Setting `vanilo.adyen.bind` to `false` will cause that neither the
+`AdyenClient` nor the `AdyenPaymentGateway` classes will be bound with
+the Laravel DI container automatically. Therefore, you need to do this
+yourself in your application, typically in the
+`AppServiceProvider::boot()` method:
 
 ```php
+$this->app->bind(AdyenClient::class, function ($app) {
+    return new AdyenClient(
+        config('vanilo.adyen.api_key'),
+        config('vanilo.adyen.merchant_account'),
+        config('vanilo.adyen.client_key'),
+        config('vanilo.adyen.live_endpoint_url_prefix'),
+        config('vanilo.adyen.is_test'),
+    );
+});
+
 $this->app->bind(AdyenPaymentGateway::class, function ($app) {
     return new AdyenPaymentGateway(
-        config('vanilo.adyen.xxx'),  // You can use any source
-        config('vanilo.adyen.yyy'),  // other than config()
-        config('vanilo.adyen.zzz')  // for passing args
+        $app->make(AdyenClient::class)
     );
 });
 ```
