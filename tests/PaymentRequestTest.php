@@ -79,6 +79,16 @@ class PaymentRequestTest extends TestCase
     }
 
     /** @test */
+    public function the_html_snippet_contains_the_amount()
+    {
+        $request = $this->gateway->createPaymentRequest($this->createCompleteDummyPayment('USD', 12.99));
+
+        $html = $request->getHtmlSnippet();
+        $this->assertStringContainsString('"amount":1299', $html);
+        $this->assertStringContainsString('"currency":"USD"', $html);
+    }
+
+    /** @test */
     public function the_html_snippet_locale_defaults_to_the_apps_locale()
     {
         $request = $this->gateway->createPaymentRequest($this->createCompleteDummyPayment());

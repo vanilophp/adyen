@@ -41,6 +41,10 @@ class AdyenPaymentRequest implements PaymentRequest
                 'environment' => $this->environment,
                 'locale' => $options['locale'] ?? app()->getLocale(),
                 'paymentMethods' => $this->paymentMethods,
+                'amount' => [
+                    'amount' => $this->payment->getAmount() * 100, // @todo, some currencies might not be in "cents"
+                    'currency' => $this->payment->getCurrency(),
+                ]
             ]
         )->render();
     }

@@ -10,10 +10,11 @@
 
 <script>
     const adyenConfiguration = {
-        paymentMethodsResponse: {!! json_encode($paymentMethods) !!}, // The `/paymentMethods` response from the server.
-        clientKey: "{{ $clientKey }}", // Web Drop-in versions before 3.10.1 use originKey instead of clientKey.
+        paymentMethodsResponse: {!! json_encode($paymentMethods) !!},
+        clientKey: "{{ $clientKey }}",
         locale: "{{ $locale }}",
         environment: "{{ $environment }}",
+        amount: {!! json_encode($amount) !!},
         onSubmit: (state, dropin) => {
             // Your function calling your server to make the `/payments` request
             makePayment(state.data)
