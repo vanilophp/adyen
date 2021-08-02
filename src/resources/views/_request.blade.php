@@ -10,7 +10,7 @@
 
 <script>
     const adyenConfiguration = {
-        paymentMethodsResponse: {{ json_encode($paymentMethods) }}, // The `/paymentMethods` response from the server.
+        paymentMethodsResponse: {!! json_encode($paymentMethods) !!}, // The `/paymentMethods` response from the server.
         clientKey: "{{ $clientKey }}", // Web Drop-in versions before 3.10.1 use originKey instead of clientKey.
         locale: "{{ $locale }}",
         environment: "{{ $environment }}",
