@@ -46,17 +46,6 @@
                 .catch(error => {
                     throw Error(error);
                 });
-        },
-        paymentMethodsConfiguration: {
-            card: { // Example optional configuration for Cards
-                hasHolderName: true,
-                holderNameRequired: true,
-                enableStoreDetails: true,
-                hideCVC: false, // Change this to true to hide the CVC field for stored cards
-                name: 'Credit or debit card',
-                onSubmit: () => {
-                }, // onSubmit configuration for card payments. Overrides the global configuration.
-            }
         }
     };
 
