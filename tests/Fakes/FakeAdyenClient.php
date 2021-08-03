@@ -30,7 +30,7 @@ class FakeAdyenClient implements AdyenClient
 
     public function getClientKey(): string
     {
-        return $this->clientKey ?? config('vanilo.adyen.client_key');
+        return $this->clientKey ?? config('vanilo.adyen.client_key') ?? '';
     }
 
     public function getEnvironment(): string
@@ -40,12 +40,12 @@ class FakeAdyenClient implements AdyenClient
 
     public function getApiKey(): string
     {
-        return $this->apiKey ?? config('vanilo.adyen.api_key');
+        return $this->apiKey ?? config('vanilo.adyen.api_key') ?? '';
     }
 
     public function getMerchantAccount(): string
     {
-        return $this->merchantAccount ??  config('vanilo.adyen.merchant_account');
+        return $this->merchantAccount ?? config('vanilo.adyen.merchant_account') ?? '';
     }
 
     public function getPaymentMethods(Payment $payment, string $locale = null): array

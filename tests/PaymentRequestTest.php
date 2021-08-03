@@ -72,10 +72,11 @@ class PaymentRequestTest extends TestCase
     /** @test */
     public function the_html_snippet_contains_the_client_key()
     {
+        $this->fakeAdyenClient()->setClientKey('TestClientKeyG1b76hnBg');
         $request = $this->gateway->createPaymentRequest($this->createCompleteDummyPayment());
 
         $html = $request->getHtmlSnippet();
-        $this->assertStringContainsString(config('vanilo.adyen.client_key'), $html);
+        $this->assertStringContainsString('TestClientKeyG1b76hnBg', $html);
     }
 
     /** @test */
@@ -109,6 +110,7 @@ class PaymentRequestTest extends TestCase
     /** @test */
     public function it_injects_the_proper_environment()
     {
+        config(['vanilo.adyen.is_test' => true]);
         $request = $this->gateway->createPaymentRequest($this->createCompleteDummyPayment());
 
         $html = $request->getHtmlSnippet();
