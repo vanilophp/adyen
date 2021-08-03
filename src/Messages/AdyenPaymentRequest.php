@@ -34,8 +34,10 @@ class AdyenPaymentRequest implements PaymentRequest
 
     public function getHtmlSnippet(array $options = []): ?string
     {
+        $view = $options['view'] ?? $this->view;
+
         return View::make(
-            $this->view,
+            $view,
             [
                 'clientKey' => $this->clientKey,
                 'environment' => $this->environment,
