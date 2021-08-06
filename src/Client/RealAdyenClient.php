@@ -18,6 +18,7 @@ use Adyen\Client as NativeAdyenClient;
 use Adyen\Environment;
 use Adyen\Service\Checkout;
 use Vanilo\Adyen\Contracts\AdyenClient;
+use Vanilo\Adyen\Messages\AdyenCreatePaymentResponse;
 use Vanilo\Payment\Contracts\Payment;
 
 class RealAdyenClient implements AdyenClient
@@ -26,7 +27,7 @@ class RealAdyenClient implements AdyenClient
 
     private string $clientKey;
 
-    private ?Checkout $checkout = null;
+    private ?Checkout $checkoutSvc = null;
 
     public function __construct(
         string $apiKey,
@@ -73,7 +74,7 @@ class RealAdyenClient implements AdyenClient
 
     public function getPaymentMethods(Payment $payment, string $locale = null): array
     {
-        return $this->checkout()->paymentMethods([
+        return $this->adyenCheckoutService()->paymentMethods([
             'countryCode' => $payment->getPayable()->getBillpayer()->getBillingAddress()->getCountryCode(),
             'shopperLocale' => $locale ?? app()->getLocale(),
             'amount' => [
@@ -85,12 +86,28 @@ class RealAdyenClient implements AdyenClient
         ]);
     }
 
-    private function checkout(): Checkout
+    public function submitPayment(Payment $payment, $stateDataPaymentMethod, string $returnUrl): AdyenCreatePaymentResponse
     {
-        if (null === $this->checkout) {
-            $this->checkout = new Checkout($this->nativeClient);
+        $response = $this->adyenCheckoutService()->payments([
+            "paymentMethod" => $stateDataPaymentMethod,
+            "amount" => [
+                "currency" => $payment->getCurrency(),
+                "value" => intval($payment->getAmount() * 100) // @todo, some currencies might not be in "cents"
+            ],
+            "reference" => $payment->getPaymentId(),
+            "returnUrl" => $returnUrl,
+            "merchantAccount" => $this->getMerchantAccount(),
+        ]);
+
+        return new AdyenCreatePaymentResponse($response['resultCode'], $response['action'] ?? null);
+    }
+
+    private function adyenCheckoutService(): Checkout
+    {
+        if (null === $this->checkoutSvc) {
+            $this->checkoutSvc = new Checkout($this->nativeClient);
         }
 
-        return $this->checkout;
+        return $this->checkoutSvc;
     }
 }

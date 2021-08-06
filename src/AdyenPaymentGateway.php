@@ -7,6 +7,7 @@ namespace Vanilo\Adyen;
 use Illuminate\Http\Request;
 use Vanilo\Adyen\Contracts\AdyenClient;
 use Vanilo\Adyen\Factories\RequestFactory;
+use Vanilo\Adyen\Factories\ResponseFactory;
 use Vanilo\Contracts\Address;
 use Vanilo\Payment\Contracts\Payment;
 use Vanilo\Payment\Contracts\PaymentGateway;
@@ -21,9 +22,20 @@ class AdyenPaymentGateway implements PaymentGateway
 
     private ?RequestFactory $requestFactory = null;
 
-    public function __construct(AdyenClient $adyenClient)
+    private ?ResponseFactory $responseFactory = null;
+
+    private string $submitUrl;
+
+    private string $detailsUrl;
+
+    private string $returnUrl;
+
+    public function __construct(AdyenClient $adyenClient, string $submitUrl, string $detailsUrl, string $returnUrl)
     {
         $this->adyenClient = $adyenClient;
+        $this->submitUrl = $submitUrl;
+        $this->detailsUrl = $detailsUrl;
+        $this->returnUrl = $returnUrl;
     }
 
     public static function getName(): string
@@ -37,12 +49,27 @@ class AdyenPaymentGateway implements PaymentGateway
             $this->requestFactory = new RequestFactory($this->adyenClient);
         }
 
+        $urls = array_merge([
+            'details' => $this->detailsUrl,
+            'submit' => $this->submitUrl,
+        ], $options['urls'] ?? []);
+        $options['urls'] = $urls;
+
         return $this->requestFactory->create($payment, $options);
     }
 
     public function processPaymentResponse(Request $request, array $options = []): PaymentResponse
     {
-        // @todo implement
+        if (null === $this->responseFactory) {
+            $this->responseFactory = new ResponseFactory($this->adyenClient);
+        }
+
+        return $this->responseFactory->createFromRequest($request);
+    }
+
+    public function submitPaymentToAdyen(Payment $payment, $stateDataPaymentMethod)
+    {
+        return $this->adyenClient->submitPayment($payment, $stateDataPaymentMethod, $this->returnUrl);
     }
 
     public function isOffline(): bool

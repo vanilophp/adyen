@@ -16,6 +16,8 @@ namespace Vanilo\Adyen\Tests\Fakes;
 
 use Adyen\Environment;
 use Vanilo\Adyen\Contracts\AdyenClient;
+use Vanilo\Adyen\Messages\AdyenCreatePaymentResponse;
+use Vanilo\Adyen\Models\AdyenPaymentResult;
 use Vanilo\Payment\Contracts\Payment;
 
 class FakeAdyenClient implements AdyenClient
@@ -27,6 +29,8 @@ class FakeAdyenClient implements AdyenClient
     private ?string $apiKey = null;
 
     private ?string $merchantAccount = null;
+
+    private ?array $adyenCreatePaymentRequestData = null;
 
     public function getClientKey(): string
     {
@@ -74,6 +78,27 @@ class FakeAdyenClient implements AdyenClient
                 ]
             ]
         ];
+    }
+
+    public function submitPayment(Payment $payment, $stateDataPaymentMethod, string $returnUrl): AdyenCreatePaymentResponse
+    {
+        $this->adyenCreatePaymentRequestData = [
+            "paymentMethod" => $stateDataPaymentMethod,
+            "amount" => [
+                "currency" => $payment->getCurrency(),
+                "value" => intval($payment->getAmount() * 100) // @todo, some currencies might not be in "cents"
+            ],
+            "reference" => $payment->getPaymentId(),
+            "returnUrl" => $returnUrl,
+            "merchantAccount" => $this->getMerchantAccount(),
+        ];
+
+        return new AdyenCreatePaymentResponse(AdyenPaymentResult::AUTHORISED, null);
+    }
+
+    public function getAdyenCreatePaymentRequestData(): ?array
+    {
+        return $this->adyenCreatePaymentRequestData;
     }
 
     public function setClientKey(?string $clientKey): void

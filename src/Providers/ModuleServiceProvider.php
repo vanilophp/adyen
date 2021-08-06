@@ -38,7 +38,10 @@ class ModuleServiceProvider extends BaseModuleServiceProvider
 
             $this->app->bind(AdyenPaymentGateway::class, function ($app) {
                 return new AdyenPaymentGateway(
-                    $app->make(AdyenClient::class)
+                    $app->make(AdyenClient::class),
+                    $this->config('urls.submit'),
+                    $this->config('urls.details'),
+                    $this->config('urls.return'),
                 );
             });
         }

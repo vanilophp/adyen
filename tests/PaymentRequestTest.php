@@ -39,7 +39,7 @@ class PaymentRequestTest extends TestCase
             'name' => 'Adyen',
         ]);
 
-        $this->gateway = new AdyenPaymentGateway($this->fakeAdyenClient());
+        $this->gateway = new AdyenPaymentGateway($this->fakeAdyenClient(), '', '', '');
     }
 
     /** @test */
@@ -101,10 +101,73 @@ class PaymentRequestTest extends TestCase
     /** @test */
     public function the_locale_can_be_specified()
     {
-        $request = $this->gateway->createPaymentRequest($this->createCompleteDummyPayment());
+        $request = $this->gateway->createPaymentRequest(
+            $this->createCompleteDummyPayment(),
+            null,
+            ['locale' => 'de-AT']
+        );
 
-        $html = $request->getHtmlSnippet(['locale' => 'de-AT']);
+        $html = $request->getHtmlSnippet();
         $this->assertStringContainsString('locale: "de-AT"', $html);
+    }
+
+    /** @test */
+    public function the_submit_url_can_be_specified()
+    {
+        $request = $this->gateway->createPaymentRequest(
+            $this->createCompleteDummyPayment(),
+            null,
+            ['urls' => ['submit' => 'http://some.url.to/1234']]
+        );
+
+        $html = $request->getHtmlSnippet();
+        $this->assertStringContainsString('handleSubmission(state.data, "http://some.url.to/1234")', $html);
+    }
+
+    /** @test */
+    public function the_details_url_can_be_specified()
+    {
+        $request = $this->gateway->createPaymentRequest(
+            $this->createCompleteDummyPayment(),
+            null,
+            ['urls' => ['details' => 'https://ecom.app/adyen/details']]
+        );
+
+        $html = $request->getHtmlSnippet();
+        $this->assertStringContainsString('handleDetailsCall(state.data, "https://ecom.app/adyen/details")', $html);
+    }
+
+    /** @test */
+    public function the_return_url_can_be_specified()
+    {
+        $this->fakeAdyenClient()->submitPayment(
+            $this->createCompleteDummyPayment(),
+            [],
+            'https://ecom.app/checkout/adyen/return?pid=123'
+        );
+
+        $this->assertEquals(
+            'https://ecom.app/checkout/adyen/return?pid=123',
+            $this->fakeAdyenClient()->getAdyenCreatePaymentRequestData()['returnUrl']
+        );
+    }
+
+    /** @test */
+    public function url_parameters_are_replaced()
+    {
+        $payment = $this->createCompleteDummyPayment();
+        $request = $this->gateway->createPaymentRequest(
+            $payment,
+            null,
+            ['urls' => [
+                'submit' => 'http://some.url.to/submit/{paymentId}',
+                'details' => 'http://some.url.to/details?pid={paymentId}'
+            ]]
+        );
+
+        $html = $request->getHtmlSnippet();
+        $this->assertStringContainsString('handleSubmission(state.data, "http://some.url.to/submit/' . $payment->getPaymentId() . '")', $html);
+        $this->assertStringContainsString('handleDetailsCall(state.data, "http://some.url.to/details?pid=' . $payment->getPaymentId() . '")', $html);
     }
 
     /** @test */

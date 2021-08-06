@@ -20,16 +20,30 @@ class AdyenPaymentRequest implements PaymentRequest
 
     private array $paymentMethods;
 
+    private string $submitUrl;
+
+    private string $detailsUrl;
+
+    private string $returnUrl;
+
+    private ?string $locale;
+
     public function __construct(
         Payment $payment,
         array $paymentMethods,
         string $clientKey,
-        string $environment
+        string $environment,
+        ?string $locale,
+        array $urls = []
     ) {
         $this->clientKey = $clientKey;
         $this->environment = $environment;
         $this->payment = $payment;
         $this->paymentMethods = $paymentMethods;
+        $this->locale = $locale;
+        $this->submitUrl = $urls['submit'] ?? '';
+        $this->detailsUrl = $urls['details'] ?? '';
+        $this->returnUrl = $urls['return'] ?? '';
     }
 
     public function getHtmlSnippet(array $options = []): ?string
@@ -41,8 +55,12 @@ class AdyenPaymentRequest implements PaymentRequest
             [
                 'clientKey' => $this->clientKey,
                 'environment' => $this->environment,
-                'locale' => $options['locale'] ?? app()->getLocale(),
+                'locale' => $this->locale,
                 'paymentMethods' => $this->paymentMethods,
+                'payment' => $this->payment,
+                'submitUrl' => $this->submitUrl,
+                'returnUrl' => $this->returnUrl,
+                'detailsUrl' => $this->detailsUrl,
                 'amount' => [
                     'amount' => $this->payment->getAmount() * 100, // @todo, some currencies might not be in "cents"
                     'currency' => $this->payment->getCurrency(),

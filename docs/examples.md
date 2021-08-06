@@ -72,6 +72,14 @@ use Vanilo\Payment\Processing\PaymentResponseHandler;
 
 class AdyenReturnController extends Controller
 {
+    public function submit(Request $request, string $paymentId)
+    {
+        $gateway = PaymentGateways::make('adyen');
+        $payment = Payment::findByPaymentId($paymentId);
+    
+        return $gateway->submitPaymentToAdyen($payment, $request->paymentMethod);
+    }
+    
     public function return(Request $request)
     {
         Log::debug('Adyen confirmation', $request->toArray());

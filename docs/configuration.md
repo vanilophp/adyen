@@ -15,6 +15,123 @@ ADYEN_LIVE_ENDPOINT_URL_PREFIX="1797a841fbb37ca7-AdyenDemo" # Only needed for li
 > For more details refer to [Adyen Getting Started](https://docs.adyen.com/online-payments/get-started)
 > and [Live URL Prefix](https://docs.adyen.com/development-resources/live-endpoints#live-url-prefix).
 
+## Setting URLs
+
+Adyen requires your application to have 3 endpoints that can be called
+by Adyen's Drop-in frontend: the **submit**, the **details** and the
+**return** URL.
+
+These URLs are not defined by this library, but by your application.
+Routes, controllers, etc need to be set up in your app and be passed to
+this library by setting the `vanilo.adyen.urls.submit`,
+`vanilo.adyen.urls.details` and `vanilo.adyen.urls.return` configuration
+values.
+
+To set these values, add them in your app to `config/vanilo.php`:
+
+```php
+// config/vanilo.php
+// Values below are examples, the URI structure is completely up to you
+return [
+    //...
+    'adyen' => [
+        'urls' => [
+            'details' => '/payment/adyen/{paymentId}/details',
+            'submit' => '/payment/adyen/{paymentId}/submit',
+            'return' => '/checkout/adyen-return',
+        ],        
+    ]
+    //...
+];
+```
+
+In the [Examples](examples.md) section of this documentation, there's a
+complete example how to implement these endpoints.
+
+### The Submit URL
+
+> See also in Adyen Documentation at [Make a Payment](https://docs.adyen.com/online-payments/drop-in-web?tab=script_2#step-3-make-a-payment).
+
+The "Submit URL" is an endpoint in your application that gets called by
+the Adyen frontend once a customer has completed the payment details and
+clicks the "Pay" button.
+
+To configure it you need to set the config value of `vanilo.adyen.urls.submit`:
+
+```php
+// config/vanilo.php
+return [
+    'adyen' => [
+        'urls' => [
+            'submit' => '/checkout/adyen-submit/{paymentId}',
+        ],        
+    ]
+];
+```
+
+See at [Examples](examples.md) how to implement this endpoint.
+
+### The Details URL
+
+> See also in Adyen Documentation at [Additional Payment Details](https://docs.adyen.com/online-payments/drop-in-web?tab=script_2#step-5-additional-payment-details).
+
+Some payment methods require additional action from the shopper such as:
+- to scan a QR code,
+- to authenticate a payment with 3D Secure, or
+- to log in to their bank's website, etc
+
+to complete the payment. If the shopper performed such an action, the
+frontend has to send these additional details to an endpoint at your
+application's backend that has to handle these details.
+
+To configure it you need to set the config value of `vanilo.adyen.urls.details`:
+
+```php
+// config/vanilo.php
+return [
+    'adyen' => [
+        'urls' => [
+            'details' => '/checkout/adyen/details/{paymentId}',
+        ],        
+    ]
+];
+```
+
+See at [Examples](examples.md) how to implement this endpoint.
+
+### The Return URL
+
+> See also in Adyen Documentation at [Handle the redirect result](https://docs.adyen.com/online-payments/drop-in-web?tab=script_2#handle-the-redirect-result).
+
+Certain payments require Adyen to redirect the shopper to another
+webpage (eg. to the card's issuer bank for 3D Secure authentication).
+At the end of the operation the shopper will be sent back to your shop,
+to a URL that you specify. Adyen will append the Base64-encoded result
+value as the `redirectResult` GET parameter.
+
+To specify the return URL, you need to set the config value of `vanilo.adyen.urls.return`:
+
+```php
+// config/vanilo.php
+return [
+    'adyen' => [
+        'urls' => [
+            'return' => '/shop/checkout/payment/{paymentId}/return',
+        ],        
+    ]
+];
+```
+
+See at [Examples](examples.md) how to implement this endpoint.
+
+### Webhook URL
+
+You'll also need a webhook endpoint, but since its URL has to be entered
+manually in the Adyen Customer Area, there's no need to specify it in
+the configuration.
+
+See at [Examples](examples.md) how to implement this endpoint.
+
 ## Registration with Payments Module
 
 The module will automatically register the payment gateway with the Vanilo Payments registry by
