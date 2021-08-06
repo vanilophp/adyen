@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Vanilo\Adyen\Messages;
 
 use Konekt\Enum\Enum;
+use Vanilo\Adyen\Models\AdyenEvent;
 use Vanilo\Payment\Contracts\PaymentResponse;
 use Vanilo\Payment\Contracts\PaymentStatus;
-use Vanilo\Payment\Models\PaymentStatusProxy;
-use Vanilo\Adyen\Models\AdyenEvent;
-
 
 class AdyenPaymentResponse implements PaymentResponse
 {
@@ -26,11 +24,11 @@ class AdyenPaymentResponse implements PaymentResponse
     private ?string $transactionId;
 
     public function __construct(
-        string     $paymentId,
+        string $paymentId,
         AdyenEvent $nativeStatus,
-        string     $message,
-        ?float     $amountPaid = null,
-        ?string    $transactionId = null
+        string $message,
+        ?float $amountPaid = null,
+        ?string $transactionId = null
     ) {
         // Arguments are just an example here, feel free, to modify
         $this->paymentId = $paymentId;

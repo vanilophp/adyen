@@ -29,6 +29,5 @@ final class ResponseFactory
 
     public function createFromRequest(Request $request): AdyenPaymentResponse
     {
-
     }
 }
