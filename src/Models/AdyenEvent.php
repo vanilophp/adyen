@@ -56,6 +56,16 @@ class AdyenEvent extends Enum
     public const PAYOUT_EXPIRE = 'PAYOUT_EXPIRE';
     public const PAYOUT_THIRDPARTY = 'PAYOUT_THIRDPARTY';
 
+    /**
+     * From the Adyen Documentation:
+     *   > We may introduce new event types from time to time.
+     *   > When setting up notifications, we recommend that
+     *   > your server does not expect a predefined set of values.
+     *
+     * That's why a default fallback is enabled on this Enum
+     *
+     * @see https://docs.adyen.com/development-resources/webhooks/understand-notifications#event-codes
+     */
     protected static $unknownValuesFallbackToDefault = true;
 
     private bool $wasSuccessful = true;

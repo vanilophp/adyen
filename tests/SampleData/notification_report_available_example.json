@@ -1,0 +1,21 @@
+{
+  "live":"false",
+  "notificationItems":[
+    {
+      "NotificationRequestItem":{
+        "additionalData": {},
+        "eventCode":"REPORT_AVAILABLE",
+        "success":"true",
+        "eventDate":"2019-06-28T18:03:50+01:00",
+        "merchantAccountCode":"YOUR_MERCHANT_ACCOUNT",
+        "pspReference": "7914073381342284",
+        "reason": "https://some.adyen.report.link/download",
+        "merchantReference": "YOUR_REFERENCE",
+        "amount": {
+          "value":1130,
+          "currency":"EUR"
+        }
+      }
+    }
+  ]
+}

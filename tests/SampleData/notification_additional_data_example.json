@@ -1,0 +1,27 @@
+{
+  "live":"false",
+  "notificationItems":[
+    {
+      "NotificationRequestItem":{
+        "additionalData": {
+          "alias":"B181677540714335",
+          "aliasType":"card",
+          "arn":"022f0f2a92204d72a92d87a2ba50061f",
+          "hmacSignature":"+JWKfq4ynALK+FFzGgHnp1jSMQJMBJeb87dlph24sXw=",
+          "acquirerErrorCode":"too_busy_counting_profit",
+          "acquirerReference":"kJkoXC0SEB8iA"
+        },
+        "eventCode":"AUTHORISATION",
+        "success":"true",
+        "eventDate":"2019-06-28T18:03:50+01:00",
+        "merchantAccountCode":"YOUR_MERCHANT_ACCOUNT",
+        "pspReference": "7914073381342284",
+        "merchantReference": "YOUR_REFERENCE",
+        "amount": {
+          "value":1130,
+          "currency":"EUR"
+        }
+      }
+    }
+  ]
+}
