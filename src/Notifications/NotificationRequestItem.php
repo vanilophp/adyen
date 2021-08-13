@@ -41,6 +41,11 @@ final class NotificationRequestItem
 
     private AdditionalData $additionalData;
 
+    private function __construct(string $eventCode)
+    {
+        $this->event = AdyenEvent::create($eventCode);
+    }
+
     public static function createFromPayload(array $payload): self
     {
         $data = $payload['NotificationRequestItem'];
@@ -117,10 +122,5 @@ final class NotificationRequestItem
     public function additionalData(): AdditionalData
     {
         return $this->additionalData;
-    }
-
-    private function __construct(string $eventCode)
-    {
-        $this->event = AdyenEvent::create($eventCode);
     }
 }
