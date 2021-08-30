@@ -29,6 +29,7 @@ class ModuleServiceProvider extends BaseModuleServiceProvider
                     $this->config('api_key'),
                     $this->config('merchant_account'),
                     $this->config('client_key'),
+                    $this->config('hmac_key'),
                     $this->config('live_endpoint_url_prefix'),
                     $this->config('is_test'),
                 );

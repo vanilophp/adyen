@@ -18,6 +18,7 @@ use Adyen\Environment;
 use Vanilo\Adyen\Contracts\AdyenClient;
 use Vanilo\Adyen\Messages\AdyenCreatePaymentResponse;
 use Vanilo\Adyen\Models\AdyenPaymentResult;
+use Vanilo\Adyen\Notifications\NotificationRequestItem;
 use Vanilo\Payment\Contracts\Payment;
 
 class FakeAdyenClient implements AdyenClient
@@ -119,5 +120,10 @@ class FakeAdyenClient implements AdyenClient
     public function setMerchantAccount(?string $merchantAccount): void
     {
         $this->merchantAccount = $merchantAccount;
+    }
+
+    public function verifyHMAC(NotificationRequestItem $notification): bool
+    {
+        return true;
     }
 }

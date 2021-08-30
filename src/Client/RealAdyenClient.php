@@ -17,8 +17,10 @@ namespace Vanilo\Adyen\Client;
 use Adyen\Client as NativeAdyenClient;
 use Adyen\Environment;
 use Adyen\Service\Checkout;
+use Adyen\Util\HmacSignature;
 use Vanilo\Adyen\Contracts\AdyenClient;
 use Vanilo\Adyen\Messages\AdyenCreatePaymentResponse;
+use Vanilo\Adyen\Notifications\NotificationRequestItem;
 use Vanilo\Payment\Contracts\Payment;
 
 class RealAdyenClient implements AdyenClient
@@ -28,15 +30,18 @@ class RealAdyenClient implements AdyenClient
     private string $clientKey;
 
     private ?Checkout $checkoutSvc = null;
+    private string $hmacKey;
 
     public function __construct(
         string $apiKey,
         string $merchantAccount,
         string $clientKey,
+        string $hmacKey,
         string $liveEndpointUrlPrefix = null,
         bool $isTestEnvironment = false
     ) {
         $this->clientKey = $clientKey;
+        $this->hmacKey = $hmacKey;
 
         $this->nativeClient = new NativeAdyenClient();
         $this->nativeClient->setXApiKey($apiKey);
@@ -84,6 +89,16 @@ class RealAdyenClient implements AdyenClient
             'channel' => 'Web',
             'merchantAccount' => $this->nativeClient->getConfig()->getMerchantAccount()
         ]);
+    }
+
+    public function verifyHMAC(NotificationRequestItem $notification): bool
+    {
+        $hmac = new HmacSignature();
+        if (!$hmac->isHmacSupportedEventCode($notification->toArray())) {
+            return true;
+        }
+
+        return $hmac->isValidNotificationHMAC($this->hmacKey, $notification->toArray());
     }
 
     public function submitPayment(Payment $payment, $stateDataPaymentMethod, string $returnUrl): AdyenCreatePaymentResponse

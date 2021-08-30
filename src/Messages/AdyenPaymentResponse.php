@@ -19,14 +19,14 @@ class AdyenPaymentResponse implements PaymentResponse
 
     private ?PaymentStatus $status = null;
 
-    private string $message;
+    private ?string $message;
 
     private ?string $transactionId;
 
     public function __construct(
         string $paymentId,
         AdyenEvent $nativeStatus,
-        string $message,
+        ?string $message,
         ?float $amountPaid = null,
         ?string $transactionId = null
     ) {
@@ -40,12 +40,11 @@ class AdyenPaymentResponse implements PaymentResponse
 
     public function wasSuccessful(): bool
     {
-        // implement it based on the gateway logic
+        return $this->nativeStatus->wasSuccessful();
     }
 
     public function getMessage(): string
     {
-        // Just an example, feel free to implement a different logic
         return $this->message ?? $this->nativeStatus->label();
     }
 

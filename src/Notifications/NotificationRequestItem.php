@@ -20,6 +20,8 @@ use Vanilo\Adyen\Models\AdyenEvent;
 final class NotificationRequestItem
 {
     use UnderstandsStringBooleans;
+    
+    private array $rawData;
 
     private AdyenEvent $event;
 
@@ -41,16 +43,16 @@ final class NotificationRequestItem
 
     private AdditionalData $additionalData;
 
-    private function __construct(string $eventCode)
+    private function __construct(array $rawData)
     {
-        $this->event = AdyenEvent::create($eventCode);
+        $this->event = AdyenEvent::create($rawData['eventCode']);
+        $this->rawData = $rawData;
     }
 
     public static function createFromPayload(array $payload): self
     {
         $data = $payload['NotificationRequestItem'];
-
-        $result = new self($data['eventCode']);
+        $result = new self($data);
 
         self::boolify($data['success']) ? $result->event->markAsSuccessful() : $result->event->markAsFailed();
         $result->date = Carbon::parse($data['eventDate']);
@@ -122,5 +124,10 @@ final class NotificationRequestItem
     public function additionalData(): AdditionalData
     {
         return $this->additionalData;
+    }
+
+    public function toArray(): array
+    {
+        return $this->rawData;
     }
 }

@@ -15,6 +15,7 @@ return [
     'api_key' => env('ADYEN_API_KEY'),
     'merchant_account' => env('ADYEN_MERCHANT_ACCOUNT'),
     'client_key' => env('ADYEN_CLIENT_KEY'),
+    'hmac_key' => env('ADYEN_HMAC_KEY'),
     'live_endpoint_url_prefix' => env('ADYEN_LIVE_ENDPOINT_URL_PREFIX'),
     'urls' => [
         'submit' => '',

@@ -9,6 +9,7 @@ ADYEN_IS_TEST=false               # true for test, false for live environments
 ADYEN_API_KEY="AQEjhmfuXNWTK0..." # Find at Adyen Customer Area -> Developers -> API credentials
 ADYEN_MERCHANT_ACCOUNT="YourECOM" # Obtain the merchant key from Adyen Customer Area
 ADYEN_CLIENT_KEY="test_WDLE44..." # Find at Adyen Customer Area -> Developers -> API credentials
+ADYEN_HMAC_KEY="D4DC3481D2706..." # Find at Adyen Customer Area -> Developers -> Webhooks -> Additional Settings, when creating the webhook
 ADYEN_LIVE_ENDPOINT_URL_PREFIX="1797a841fbb37ca7-AdyenDemo" # Only needed for live 
 ```
 

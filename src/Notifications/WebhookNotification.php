@@ -61,14 +61,4 @@ final class WebhookNotification
     {
         return $this->isLive;
     }
-
-    public function hasHMACSignature(): bool
-    {
-        return $this->item()->additionalData()->hasHmacSignature();
-    }
-
-    public function hmacSignature(): ?string
-    {
-        return $this->item()->additionalData()->hmacSignature();
-    }
 }

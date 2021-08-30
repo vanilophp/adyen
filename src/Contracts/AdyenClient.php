@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Vanilo\Adyen\Contracts;
 
 use Vanilo\Adyen\Messages\AdyenCreatePaymentResponse;
+use Vanilo\Adyen\Notifications\NotificationRequestItem;
 use Vanilo\Payment\Contracts\Payment;
 
 interface AdyenClient
@@ -30,4 +31,6 @@ interface AdyenClient
     public function getPaymentMethods(Payment $payment, string $locale = null): array;
 
     public function submitPayment(Payment $payment, $stateDataPaymentMethod, string $returnUrl): AdyenCreatePaymentResponse;
+
+    public function verifyHMAC(NotificationRequestItem $notification): bool;
 }

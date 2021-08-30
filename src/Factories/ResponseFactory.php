@@ -16,7 +16,9 @@ namespace Vanilo\Adyen\Factories;
 
 use Illuminate\Http\Request;
 use Vanilo\Adyen\Contracts\AdyenClient;
+use Vanilo\Adyen\Exceptions\HMACVerificationFailedException;
 use Vanilo\Adyen\Messages\AdyenPaymentResponse;
+use Vanilo\Adyen\Notifications\WebhookNotification;
 
 final class ResponseFactory
 {
@@ -29,5 +31,18 @@ final class ResponseFactory
 
     public function createFromRequest(Request $request): AdyenPaymentResponse
     {
+        $notification = WebhookNotification::createFromRequest($request);
+        $event = $notification->item();
+        if (!$this->adyenClient->verifyHMAC($event)) {
+            throw HMACVerificationFailedException::fromNotification($event);
+        }
+
+        return new AdyenPaymentResponse(
+            $event->merchantReference(),
+            $event->event(),
+            null,
+            $event->amount(),
+            $event->additionalData()->hmacSignature()
+        );
     }
 }
