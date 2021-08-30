@@ -20,7 +20,7 @@ use Vanilo\Adyen\Models\AdyenEvent;
 final class NotificationRequestItem
 {
     use UnderstandsStringBooleans;
-    
+
     private array $rawData;
 
     private AdyenEvent $event;

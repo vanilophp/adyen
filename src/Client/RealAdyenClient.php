@@ -30,6 +30,7 @@ class RealAdyenClient implements AdyenClient
     private string $clientKey;
 
     private ?Checkout $checkoutSvc = null;
+
     private string $hmacKey;
 
     public function __construct(

@@ -28,7 +28,6 @@ class HMACVerificationFailedException extends Exception
         $this->requestItem = $requestItem;
     }
 
-
     public static function fromNotification(NotificationRequestItem $notificationRequestItem): HMACVerificationFailedException
     {
         return new static($notificationRequestItem);
