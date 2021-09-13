@@ -8,9 +8,22 @@ use Konekt\Enum\Enum;
 use Vanilo\Adyen\Models\AdyenEvent;
 use Vanilo\Payment\Contracts\PaymentResponse;
 use Vanilo\Payment\Contracts\PaymentStatus;
+use Vanilo\Payment\Models\PaymentStatusProxy;
 
 class AdyenPaymentResponse implements PaymentResponse
 {
+    private static array $eventsWithNegativeAmount = [
+        AdyenEvent::CANCELLATION,
+        AdyenEvent::REFUND,
+        AdyenEvent::REFUND_WITH_DATA,
+        AdyenEvent::CANCEL_OR_REFUND,
+    ];
+
+    private static array $eventsWithPositiveAmount = [
+        AdyenEvent::AUTHORISATION,
+        AdyenEvent::REFUND_REVERSED,
+    ];
+
     private string $paymentId;
 
     private ?float $amountPaid;
@@ -30,10 +43,9 @@ class AdyenPaymentResponse implements PaymentResponse
         ?float $amountPaid = null,
         ?string $transactionId = null
     ) {
-        // Arguments are just an example here, feel free, to modify
         $this->paymentId = $paymentId;
         $this->nativeStatus = $nativeStatus;
-        $this->amountPaid = $amountPaid;
+        $this->amountPaid = $this->calculateAmountPaid($amountPaid, $nativeStatus);
         $this->message = $message;
         $this->transactionId = $transactionId;
     }
@@ -63,13 +75,47 @@ class AdyenPaymentResponse implements PaymentResponse
         return $this->paymentId;
     }
 
+    /**
+     * @see https://docs.adyen.com/development-resources/webhooks/understand-notifications#event-codes
+     */
     public function getStatus(): PaymentStatus
     {
         if (null === $this->status) {
-            // Obtain the mapped status from the transaction
-            // it usually takes the native status, message
-            // or other data from the gateway callback
-            // and applies mapping to Vanilo Status
+            $success = $this->nativeStatus->wasSuccessful();
+            switch ($this->nativeStatus->value()) {
+
+                case AdyenEvent::AUTHORISATION:
+                    $this->status = $success ? PaymentStatusProxy::AUTHORIZED() : PaymentStatusProxy::DECLINED();
+                break;
+
+                case AdyenEvent::CAPTURE:
+                    // @todo it's only a hypothesis that capture can only follow after an
+                    //       authorization. This case needs to be verified. In general
+                    //       it would be safer to return a "void" or the old status
+                    $this->status = $success ? PaymentStatusProxy::PAID() : PaymentStatusProxy::AUTHORIZED();
+                break;
+
+                case AdyenEvent::CAPTURE_FAILED:
+                    $this->status = PaymentStatusProxy::AUTHORIZED();
+                break;
+
+                case AdyenEvent::REFUND:
+                    // @see https://docs.adyen.com/online-payments/refund
+                    // From the Adyen Docs:
+                    //    > You can only refund a payment after it has already
+                    //    > been captured. Payments that have not yet been
+                    //    > captured have to be cancelled instead.
+                    $this->status = $success ? PaymentStatusProxy::REFUNDED() : PaymentStatusProxy::PAID();
+                break;
+
+                case AdyenEvent::CANCELLATION:
+                    // @see https://docs.adyen.com/online-payments/cancel
+                    $this->status = $success ? PaymentStatusProxy::CANCELLED() : PaymentStatusProxy::AUTHORIZED();
+                break;
+
+                default:
+                    $this->status = PaymentStatusProxy::PENDING();
+            }
         }
 
         return $this->status;
@@ -78,5 +124,20 @@ class AdyenPaymentResponse implements PaymentResponse
     public function getNativeStatus(): Enum
     {
         return $this->nativeStatus;
+    }
+
+    private function calculateAmountPaid(?float $amountPaid, AdyenEvent $nativeStatus): ?float
+    {
+        if ($nativeStatus->hasFailed() || $nativeStatus->isUnknown()) {
+            return null;
+        }
+
+        if (in_array($nativeStatus->value(), self::$eventsWithNegativeAmount)) {
+            return -1 * $amountPaid;
+        } elseif (in_array($nativeStatus->value(), self::$eventsWithPositiveAmount)) {
+            return $amountPaid;
+        }
+
+        return null;
     }
 }

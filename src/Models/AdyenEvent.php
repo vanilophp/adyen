@@ -8,6 +8,8 @@ use Konekt\Enum\Enum;
 
 /**
  * @see https://docs.adyen.com/development-resources/webhooks/understand-notifications#event-codes
+ *
+ * @method bool isUnknown()
  */
 class AdyenEvent extends Enum
 {
