@@ -20,7 +20,7 @@ use Vanilo\Adyen\Notifications\NotificationRequestItem;
 
 class HMACVerificationFailedException extends Exception
 {
-    private NotificationRequestItem $requestItem;
+    public NotificationRequestItem $requestItem;
 
     public function __construct(NotificationRequestItem $requestItem, Throwable $previous = null)
     {
