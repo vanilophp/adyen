@@ -83,7 +83,6 @@ class AdyenPaymentResponse implements PaymentResponse
         if (null === $this->status) {
             $success = $this->nativeStatus->wasSuccessful();
             switch ($this->nativeStatus->value()) {
-
                 case AdyenEvent::AUTHORISATION:
                     $this->status = $success ? PaymentStatusProxy::AUTHORIZED() : PaymentStatusProxy::DECLINED();
                 break;
