@@ -35,7 +35,7 @@ final class AdyenCreatePaymentResponse implements Responsable
         ];
 
         if (null !== $this->action) {
-            $request['action'] = $this->action;
+            $response['action'] = $this->action;
         }
 
         return $response;
