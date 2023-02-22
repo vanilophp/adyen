@@ -16,5 +16,6 @@
   </testsuites>
   <php>
     <env name="APP_DEBUG" value="true"/>
+    <env name="ADYEN_IS_TEST" value="true"/>
   </php>
 </phpunit>

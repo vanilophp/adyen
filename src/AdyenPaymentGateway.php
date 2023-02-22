@@ -13,9 +13,12 @@ use Vanilo\Payment\Contracts\Payment;
 use Vanilo\Payment\Contracts\PaymentGateway;
 use Vanilo\Payment\Contracts\PaymentRequest;
 use Vanilo\Payment\Contracts\PaymentResponse;
+use Vanilo\Payment\Support\ReplacesPaymentUrlParameters;
 
 class AdyenPaymentGateway implements PaymentGateway
 {
+    use ReplacesPaymentUrlParameters;
+
     public const DEFAULT_ID = 'adyen';
 
     private AdyenClient $adyenClient;
@@ -69,7 +72,11 @@ class AdyenPaymentGateway implements PaymentGateway
 
     public function submitPaymentToAdyen(Payment $payment, $stateDataPaymentMethod)
     {
-        return $this->adyenClient->submitPayment($payment, $stateDataPaymentMethod, $this->returnUrl);
+        return $this->adyenClient->submitPayment(
+            $payment,
+            $stateDataPaymentMethod,
+            $this->replaceUrlParameters($this->returnUrl, $payment)
+        );
     }
 
     public function isOffline(): bool
