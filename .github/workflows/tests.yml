@@ -10,10 +10,14 @@ jobs:
     timeout-minutes: 10
     strategy:
       matrix:
-        php: ['7.4', '8.0']
-        laravel: ['8.0', '8.52']
+        php: ['7.4', '8.0', '8.1', '8.2']
+        laravel: ['8.0', '8.83']
         exclude:
           - php: '8.0'
+            laravel: '8.0'
+          - php: '8.1'
+            laravel: '8.0'
+          - php: '8.2'
             laravel: '8.0'
     name: PHP ${{ matrix.php }} Laravel ${{ matrix.laravel }}
     steps:
@@ -33,3 +37,8 @@ jobs:
         run: mkdir -p database && touch database/database.sqlite
       - name: Run Tests
         run: php vendor/bin/phpunit --testdox
+        env:
+          ADYEN_API_KEY: ${{ secrets.ADYEN_API_KEY }}
+          ADYEN_MERCHANT_ACCOUNT: ${{ secrets.ADYEN_MERCHANT_ACCOUNT }}
+          ADYEN_CLIENT_KEY: ${{ secrets.ADYEN_CLIENT_KEY }}
+          ADYEN_HMAC_KEY: ${{ secrets.ADYEN_HMAC_KEY }}
