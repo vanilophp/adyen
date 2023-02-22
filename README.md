@@ -1,6 +1,6 @@
-# Adyen Payment Gateway Support for Vanilo
+# Adyen Payment Gateway for Vanilo
 
-[![Tests](https://img.shields.io/github/workflow/status/vanilophp/adyen/tests/master?style=flat-square)](https://github.com/vanilophp/adyen/actions?query=workflow%3Atests)
+[![Tests](https://img.shields.io/github/actions/workflow/status/vanilophp/adyen/tests.yml?branch=master&style=flat-square)](https://github.com/vanilophp/adyen/actions?query=workflow%3Atests)
 [![Packagist Stable Version](https://img.shields.io/packagist/v/vanilo/adyen.svg?style=flat-square&label=stable)](https://packagist.org/packages/vanilo/adyen)
 [![StyleCI](https://styleci.io/repos/390985000/shield?branch=master)](https://styleci.io/repos/390985000)
 [![Packagist downloads](https://img.shields.io/packagist/dt/vanilo/adyen.svg?style=flat-square)](https://packagist.org/packages/vanilo/adyen)

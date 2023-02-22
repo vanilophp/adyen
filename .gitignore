@@ -3,3 +3,4 @@ vendor/
 composer.lock
 phpunit.xml
 /.phpunit.result.cache
+/adyen_test_api_key.txt

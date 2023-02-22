@@ -4,4 +4,4 @@
 ##### 2023-02-22
 
 - Initial release
-- Requires Vanilo 3.x
+- Requires Vanilo v2.x
