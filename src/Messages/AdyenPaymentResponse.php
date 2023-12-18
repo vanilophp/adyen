@@ -85,18 +85,18 @@ class AdyenPaymentResponse implements PaymentResponse
             switch ($this->nativeStatus->value()) {
                 case AdyenEvent::AUTHORISATION:
                     $this->status = $success ? PaymentStatusProxy::AUTHORIZED() : PaymentStatusProxy::DECLINED();
-                break;
+                    break;
 
                 case AdyenEvent::CAPTURE:
                     // @todo it's only a hypothesis that capture can only follow after an
                     //       authorization. This case needs to be verified. In general
                     //       it would be safer to return a "void" or the old status
                     $this->status = $success ? PaymentStatusProxy::PAID() : PaymentStatusProxy::AUTHORIZED();
-                break;
+                    break;
 
                 case AdyenEvent::CAPTURE_FAILED:
                     $this->status = PaymentStatusProxy::AUTHORIZED();
-                break;
+                    break;
 
                 case AdyenEvent::REFUND:
                     // @see https://docs.adyen.com/online-payments/refund
@@ -105,12 +105,12 @@ class AdyenPaymentResponse implements PaymentResponse
                     //    > been captured. Payments that have not yet been
                     //    > captured have to be cancelled instead.
                     $this->status = $success ? PaymentStatusProxy::REFUNDED() : PaymentStatusProxy::PAID();
-                break;
+                    break;
 
                 case AdyenEvent::CANCELLATION:
                     // @see https://docs.adyen.com/online-payments/cancel
                     $this->status = $success ? PaymentStatusProxy::CANCELLED() : PaymentStatusProxy::AUTHORIZED();
-                break;
+                    break;
 
                 default:
                     $this->status = PaymentStatusProxy::PENDING();
