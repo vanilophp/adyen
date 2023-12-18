@@ -1,7 +1,7 @@
 # Vanilo Adyen Module Changelog
 
-## Unreleased
-##### 2023-XX-YY
+## 2.0.0
+##### 2023-12-18
 
 - Requires Vanilo 3.1+
 - Requires PHP 8.0 - 8.3
