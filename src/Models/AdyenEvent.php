@@ -68,7 +68,7 @@ class AdyenEvent extends Enum
      *
      * @see https://docs.adyen.com/development-resources/webhooks/understand-notifications#event-codes
      */
-    protected static $unknownValuesFallbackToDefault = true;
+    protected static bool $unknownValuesFallbackToDefault = true;
 
     private bool $wasSuccessful = true;
 

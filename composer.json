@@ -12,11 +12,11 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^8.0",
         "ext-json": "*",
-        "konekt/concord": "^1.5",
-        "vanilo/payment": "^2.2",
-        "vanilo/contracts": "^2.2",
+        "konekt/concord": "^1.10.2",
+        "vanilo/payment": "^3.0",
+        "vanilo/contracts": "^3.0",
         "adyen/php-api-library": "^10.1"
     },
     "autoload": {
@@ -26,7 +26,7 @@
     },
     "require-dev": {
         "ext-sqlite3": "*",
-        "orchestra/testbench": "~6.0",
+        "orchestra/testbench": "^7.0|^8.0",
         "phpunit/phpunit" : "^9.0"
     },
     "autoload-dev": {
