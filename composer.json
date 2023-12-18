@@ -2,6 +2,7 @@
     "name": "vanilo/adyen",
     "description": "Adyen Payment Gateway Support for Vanilo (Laravel)",
     "type": "library",
+    "keywords": ["laravel", "vanilo", "adyen", "payments"],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "license": "MIT",
