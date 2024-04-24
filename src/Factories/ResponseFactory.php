@@ -42,7 +42,7 @@ final class ResponseFactory
             $event->event(),
             null,
             $event->amount(),
-            $event->additionalData()->hmacSignature()
+            $event->additionalData()->hmacSignature()// @todo it should be $event->pspReference()
         );
     }
 }
