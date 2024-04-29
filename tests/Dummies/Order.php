@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Vanilo\Adyen\Tests\Dummies;
 
-use ArrayIterator;
 use Illuminate\Database\Eloquent\Model;
 use Traversable;
 use Vanilo\Contracts\Billpayer;
