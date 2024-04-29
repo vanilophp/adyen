@@ -1,7 +1,7 @@
 # Vanilo Adyen Module Changelog
 
-## Unreleased
-##### 2024-XX-YY
+## 3.0.0
+##### 2024-04-29
 
 - Added Vanilo 4 compatibility
 - Added Laravel 11 support
