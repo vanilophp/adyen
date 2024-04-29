@@ -125,6 +125,11 @@ class AdyenPaymentResponse implements PaymentResponse
         return $this->nativeStatus;
     }
 
+    public function getTransactionAmount(): float
+    {
+        return $this->amountPaid ?? 0;
+    }
+
     private function calculateAmountPaid(?float $amountPaid, AdyenEvent $nativeStatus): ?float
     {
         if ($nativeStatus->hasFailed() || $nativeStatus->isUnknown()) {

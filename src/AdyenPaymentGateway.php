@@ -13,6 +13,7 @@ use Vanilo\Payment\Contracts\Payment;
 use Vanilo\Payment\Contracts\PaymentGateway;
 use Vanilo\Payment\Contracts\PaymentRequest;
 use Vanilo\Payment\Contracts\PaymentResponse;
+use Vanilo\Payment\Contracts\TransactionHandler;
 use Vanilo\Payment\Support\ReplacesPaymentUrlParameters;
 
 class AdyenPaymentGateway implements PaymentGateway
@@ -20,6 +21,8 @@ class AdyenPaymentGateway implements PaymentGateway
     use ReplacesPaymentUrlParameters;
 
     public const DEFAULT_ID = 'adyen';
+
+    private static ?string $svg = null;
 
     private AdyenClient $adyenClient;
 
@@ -68,6 +71,16 @@ class AdyenPaymentGateway implements PaymentGateway
         }
 
         return $this->responseFactory->createFromRequest($request);
+    }
+
+    public static function svgIcon(): string
+    {
+        return self::$svg ??= file_get_contents(__DIR__ . '/resources/logo.svg');
+    }
+
+    public function transactionHandler(): ?TransactionHandler
+    {
+        return null;
     }
 
     public function submitPaymentToAdyen(Payment $payment, $stateDataPaymentMethod)
