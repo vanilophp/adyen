@@ -37,7 +37,7 @@ jobs:
       - name: Create Database
         run: mkdir -p database && touch database/database.sqlite
       - name: Run Tests
-        run: php vendor/bin/phpunit --testdox
+        run: php vendor/bin/phpunit
         env:
           ADYEN_API_KEY: ${{ secrets.ADYEN_API_KEY }}
           ADYEN_MERCHANT_ACCOUNT: ${{ secrets.ADYEN_MERCHANT_ACCOUNT }}
