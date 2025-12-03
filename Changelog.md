@@ -3,7 +3,7 @@
 ## Unreleased
 ##### 2025-XX-YY
 
-- Added Vanilo 5 compatibility
+- Added Vanilo 5 compatibility (at least v5.1 required)
 - Added Laravel 12 support
 - Requires PHP 8.3+ (tested up to PHP 8.5)
 - Dropped Vanilo 4 Support
