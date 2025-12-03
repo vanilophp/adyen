@@ -17,8 +17,8 @@
         "konekt/concord": "^1.13",
         "konekt/enum": "^4.0",
         "nesbot/carbon": "^2.62.1|^3.0",
-        "vanilo/payment": "^5.1",
-        "vanilo/contracts": "^5.1",
+        "vanilo/payment": "^5.0",
+        "vanilo/contracts": "^5.0",
         "adyen/php-api-library": "^10.1"
     },
     "autoload": {
