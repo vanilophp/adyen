@@ -1,9 +1,9 @@
 # Vanilo Adyen Module Changelog
 
-## Unreleased
-##### 2025-XX-YY
+## 4.0.0
+##### 2025-12-03
 
-- Added Vanilo 5 compatibility ~~(at least v5.1 required)~~
+- Added Vanilo 5 compatibility
 - Added Laravel 12 support
 - Requires PHP 8.3+ (tested up to PHP 8.5)
 - Dropped Vanilo 4 Support
