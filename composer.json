@@ -12,13 +12,13 @@
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "ext-json": "*",
         "konekt/concord": "^1.13",
         "konekt/enum": "^4.0",
         "nesbot/carbon": "^2.62.1|^3.0",
-        "vanilo/payment": "^4.0",
-        "vanilo/contracts": "^4.0",
+        "vanilo/payment": "^5.0",
+        "vanilo/contracts": "^5.0",
         "adyen/php-api-library": "^10.1"
     },
     "autoload": {
@@ -28,8 +28,8 @@
     },
     "require-dev": {
         "ext-sqlite3": "*",
-        "orchestra/testbench": "^8.0|^9.0",
-        "phpunit/phpunit" : "^10.0"
+        "orchestra/testbench": "^8.0|^9.0|^10.0",
+        "phpunit/phpunit" : "^10.0|^11.0"
     },
     "autoload-dev": {
         "psr-4": {
@@ -41,7 +41,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.0.x-dev"
+            "dev-master": "4.0.x-dev"
         }
     }
 }
