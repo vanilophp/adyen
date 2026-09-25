@@ -1,5 +1,15 @@
 # Vanilo Adyen Module Changelog
 
+### Unreleased
+#### 2026-XX-YY
+
+- Upgrade to Vanilo 6
+- Added Laravel 13 support
+- Dropped PHP 8.3 support
+- Dropped Laravel 10 & 11 support
+- Changed the minimum Laravel 12 version to v12.61.1
+- Changed the minimum Laravel 13 version to v13.12
+
 ## 4.0.0
 ##### 2025-12-03
 
