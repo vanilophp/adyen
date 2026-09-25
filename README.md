@@ -9,15 +9,15 @@
 This library enables [Adyen Drop-in & Components](https://docs.adyen.com/online-payments/drop-in-web)
 integration for [Vanilo Payments](https://vanilo.io/docs/master/payments).
 
-Being a [Concord Module](https://konekt.dev/concord/1.9/modules) it is intended to be used by Laravel Applications.
+Being a [Concord Module](https://konekt.dev/concord/1.x/modules) it is intended to be used by Laravel Applications.
 
 ## Documentation
 
-Refer to the markdown files in the [docs](docs/) folder.
+Refer to the Markdown files in the [docs](docs/) folder.
 
 ## Known Issues
 
 Adyen expects amounts to be specified in "minor" units (eg. cents: 10 EUR => { amount: 1000, currency: "EUR" }).
-Currently the library takes the original amount, multiplies it by 100 and
+Currently, the library takes the original amount, multiplies it by 100 and
 calls it a day. Certain currencies are not like that, we need an
 adjustment layer to handle this.
